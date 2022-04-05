@@ -48,7 +48,13 @@ input StringFilter {
   contains: String
   startsWith: String
   endsWith: String
+  mode: QueryMode
   not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
 }
 
 input NestedStringFilter {
@@ -93,6 +99,925 @@ input KpilensSuperAdminCreateInput {
   password: String
 }
 
+type Organisation {
+  id: ID!
+  name: String
+  registrationNumber: String
+  dataProtectionPolicyCountry: JSON
+  hasLawfulBasisToCollectData: Boolean
+  dataSubjects: String
+  purposeOfDataCollectionAndProcessing: String
+  address: String
+  numberOfEmployees: String
+  countryOfOperation: JSON
+  email: String
+  organisationType: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  freeTrialExpirationDate: DateTime
+  isPaying: Boolean
+  users(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  usersCount(where: UserWhereInput! = {}): Int
+  teams(
+    where: TeamWhereInput! = {}
+    orderBy: [TeamOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Team!]
+  teamsCount(where: TeamWhereInput! = {}): Int
+  owner: User
+  workspaces(
+    where: WorkspaceWhereInput! = {}
+    orderBy: [WorkspaceOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Workspace!]
+  workspacesCount(where: WorkspaceWhereInput! = {}): Int
+  projects(
+    where: ProjectWhereInput! = {}
+    orderBy: [ProjectOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Project!]
+  projectsCount(where: ProjectWhereInput! = {}): Int
+}
+
+scalar DateTime
+  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
+
+input OrganisationWhereUniqueInput {
+  id: ID
+  registrationNumber: String
+  email: String
+}
+
+input OrganisationWhereInput {
+  AND: [OrganisationWhereInput!]
+  OR: [OrganisationWhereInput!]
+  NOT: [OrganisationWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  registrationNumber: StringFilter
+  hasLawfulBasisToCollectData: BooleanFilter
+  dataSubjects: StringFilter
+  purposeOfDataCollectionAndProcessing: StringFilter
+  address: StringFilter
+  numberOfEmployees: StringFilter
+  email: StringFilter
+  organisationType: StringNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
+  freeTrialExpirationDate: DateTimeNullableFilter
+  isPaying: BooleanFilter
+  users: UserManyRelationFilter
+  teams: TeamManyRelationFilter
+  owner: UserWhereInput
+  workspaces: WorkspaceManyRelationFilter
+  projects: ProjectManyRelationFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+}
+
+input NestedStringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeNullableFilter
+}
+
+input UserManyRelationFilter {
+  every: UserWhereInput
+  some: UserWhereInput
+  none: UserWhereInput
+}
+
+input TeamManyRelationFilter {
+  every: TeamWhereInput
+  some: TeamWhereInput
+  none: TeamWhereInput
+}
+
+input WorkspaceManyRelationFilter {
+  every: WorkspaceWhereInput
+  some: WorkspaceWhereInput
+  none: WorkspaceWhereInput
+}
+
+input ProjectManyRelationFilter {
+  every: ProjectWhereInput
+  some: ProjectWhereInput
+  none: ProjectWhereInput
+}
+
+input OrganisationOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  registrationNumber: OrderDirection
+  hasLawfulBasisToCollectData: OrderDirection
+  dataSubjects: OrderDirection
+  purposeOfDataCollectionAndProcessing: OrderDirection
+  address: OrderDirection
+  numberOfEmployees: OrderDirection
+  email: OrderDirection
+  organisationType: OrderDirection
+  createdAt: OrderDirection
+  updatedAt: OrderDirection
+  freeTrialExpirationDate: OrderDirection
+  isPaying: OrderDirection
+}
+
+input OrganisationUpdateInput {
+  name: String
+  registrationNumber: String
+  dataProtectionPolicyCountry: JSON
+  hasLawfulBasisToCollectData: Boolean
+  dataSubjects: String
+  purposeOfDataCollectionAndProcessing: String
+  address: String
+  numberOfEmployees: String
+  countryOfOperation: JSON
+  email: String
+  organisationType: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  freeTrialExpirationDate: DateTime
+  isPaying: Boolean
+  users: UserRelateToManyForUpdateInput
+  teams: TeamRelateToManyForUpdateInput
+  owner: UserRelateToOneForUpdateInput
+  workspaces: WorkspaceRelateToManyForUpdateInput
+  projects: ProjectRelateToManyForUpdateInput
+}
+
+input UserRelateToManyForUpdateInput {
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input TeamRelateToManyForUpdateInput {
+  disconnect: [TeamWhereUniqueInput!]
+  set: [TeamWhereUniqueInput!]
+  create: [TeamCreateInput!]
+  connect: [TeamWhereUniqueInput!]
+}
+
+input UserRelateToOneForUpdateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+}
+
+input WorkspaceRelateToManyForUpdateInput {
+  disconnect: [WorkspaceWhereUniqueInput!]
+  set: [WorkspaceWhereUniqueInput!]
+  create: [WorkspaceCreateInput!]
+  connect: [WorkspaceWhereUniqueInput!]
+}
+
+input ProjectRelateToManyForUpdateInput {
+  disconnect: [ProjectWhereUniqueInput!]
+  set: [ProjectWhereUniqueInput!]
+  create: [ProjectCreateInput!]
+  connect: [ProjectWhereUniqueInput!]
+}
+
+input OrganisationUpdateArgs {
+  where: OrganisationWhereUniqueInput!
+  data: OrganisationUpdateInput!
+}
+
+input OrganisationCreateInput {
+  name: String
+  registrationNumber: String
+  dataProtectionPolicyCountry: JSON
+  hasLawfulBasisToCollectData: Boolean
+  dataSubjects: String
+  purposeOfDataCollectionAndProcessing: String
+  address: String
+  numberOfEmployees: String
+  countryOfOperation: JSON
+  email: String
+  organisationType: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  freeTrialExpirationDate: DateTime
+  isPaying: Boolean
+  users: UserRelateToManyForCreateInput
+  teams: TeamRelateToManyForCreateInput
+  owner: UserRelateToOneForCreateInput
+  workspaces: WorkspaceRelateToManyForCreateInput
+  projects: ProjectRelateToManyForCreateInput
+}
+
+input UserRelateToManyForCreateInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input TeamRelateToManyForCreateInput {
+  create: [TeamCreateInput!]
+  connect: [TeamWhereUniqueInput!]
+}
+
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input WorkspaceRelateToManyForCreateInput {
+  create: [WorkspaceCreateInput!]
+  connect: [WorkspaceWhereUniqueInput!]
+}
+
+input ProjectRelateToManyForCreateInput {
+  create: [ProjectCreateInput!]
+  connect: [ProjectWhereUniqueInput!]
+}
+
+type Project {
+  id: ID!
+  name: String
+  description: String
+  workspace: Workspace
+  startDate: DateTime
+  endDate: DateTime
+  surveys(
+    where: SurveyWhereInput! = {}
+    orderBy: [SurveyOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Survey!]
+  surveysCount(where: SurveyWhereInput! = {}): Int
+  organisation: Organisation
+  users(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  usersCount(where: UserWhereInput! = {}): Int
+  isArchived: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input ProjectWhereUniqueInput {
+  id: ID
+  name: String
+}
+
+input ProjectWhereInput {
+  AND: [ProjectWhereInput!]
+  OR: [ProjectWhereInput!]
+  NOT: [ProjectWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  description: StringFilter
+  workspace: WorkspaceWhereInput
+  startDate: DateTimeNullableFilter
+  endDate: DateTimeNullableFilter
+  surveys: SurveyManyRelationFilter
+  organisation: OrganisationWhereInput
+  users: UserManyRelationFilter
+  isArchived: BooleanFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input SurveyManyRelationFilter {
+  every: SurveyWhereInput
+  some: SurveyWhereInput
+  none: SurveyWhereInput
+}
+
+input ProjectOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  description: OrderDirection
+  startDate: OrderDirection
+  endDate: OrderDirection
+  isArchived: OrderDirection
+  createdAt: OrderDirection
+  updatedAt: OrderDirection
+}
+
+input ProjectUpdateInput {
+  name: String
+  description: String
+  workspace: WorkspaceRelateToOneForUpdateInput
+  startDate: DateTime
+  endDate: DateTime
+  surveys: SurveyRelateToManyForUpdateInput
+  organisation: OrganisationRelateToOneForUpdateInput
+  users: UserRelateToManyForUpdateInput
+  isArchived: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input WorkspaceRelateToOneForUpdateInput {
+  create: WorkspaceCreateInput
+  connect: WorkspaceWhereUniqueInput
+  disconnect: Boolean
+}
+
+input SurveyRelateToManyForUpdateInput {
+  disconnect: [SurveyWhereUniqueInput!]
+  set: [SurveyWhereUniqueInput!]
+  create: [SurveyCreateInput!]
+  connect: [SurveyWhereUniqueInput!]
+}
+
+input OrganisationRelateToOneForUpdateInput {
+  create: OrganisationCreateInput
+  connect: OrganisationWhereUniqueInput
+  disconnect: Boolean
+}
+
+input ProjectUpdateArgs {
+  where: ProjectWhereUniqueInput!
+  data: ProjectUpdateInput!
+}
+
+input ProjectCreateInput {
+  name: String
+  description: String
+  workspace: WorkspaceRelateToOneForCreateInput
+  startDate: DateTime
+  endDate: DateTime
+  surveys: SurveyRelateToManyForCreateInput
+  organisation: OrganisationRelateToOneForCreateInput
+  users: UserRelateToManyForCreateInput
+  isArchived: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input WorkspaceRelateToOneForCreateInput {
+  create: WorkspaceCreateInput
+  connect: WorkspaceWhereUniqueInput
+}
+
+input SurveyRelateToManyForCreateInput {
+  create: [SurveyCreateInput!]
+  connect: [SurveyWhereUniqueInput!]
+}
+
+input OrganisationRelateToOneForCreateInput {
+  create: OrganisationCreateInput
+  connect: OrganisationWhereUniqueInput
+}
+
+type Survey {
+  id: ID!
+  name: String
+  schema: String
+  widgets: String
+  project: Project
+  publishId: String
+  isPublished: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+  author: User
+  responses(
+    where: SurveyResponseWhereInput! = {}
+    orderBy: [SurveyResponseOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [SurveyResponse!]
+  responsesCount(where: SurveyResponseWhereInput! = {}): Int
+}
+
+input SurveyWhereUniqueInput {
+  id: ID
+  name: String
+}
+
+input SurveyWhereInput {
+  AND: [SurveyWhereInput!]
+  OR: [SurveyWhereInput!]
+  NOT: [SurveyWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  schema: StringFilter
+  widgets: StringFilter
+  project: ProjectWhereInput
+  publishId: StringFilter
+  isPublished: BooleanFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
+  author: UserWhereInput
+  responses: SurveyResponseManyRelationFilter
+}
+
+input SurveyResponseManyRelationFilter {
+  every: SurveyResponseWhereInput
+  some: SurveyResponseWhereInput
+  none: SurveyResponseWhereInput
+}
+
+input SurveyOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  schema: OrderDirection
+  widgets: OrderDirection
+  publishId: OrderDirection
+  isPublished: OrderDirection
+  createdAt: OrderDirection
+  updatedAt: OrderDirection
+}
+
+input SurveyUpdateInput {
+  name: String
+  schema: String
+  widgets: String
+  project: ProjectRelateToOneForUpdateInput
+  publishId: String
+  isPublished: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+  author: UserRelateToOneForUpdateInput
+  responses: SurveyResponseRelateToManyForUpdateInput
+}
+
+input ProjectRelateToOneForUpdateInput {
+  create: ProjectCreateInput
+  connect: ProjectWhereUniqueInput
+  disconnect: Boolean
+}
+
+input SurveyResponseRelateToManyForUpdateInput {
+  disconnect: [SurveyResponseWhereUniqueInput!]
+  set: [SurveyResponseWhereUniqueInput!]
+  create: [SurveyResponseCreateInput!]
+  connect: [SurveyResponseWhereUniqueInput!]
+}
+
+input SurveyUpdateArgs {
+  where: SurveyWhereUniqueInput!
+  data: SurveyUpdateInput!
+}
+
+input SurveyCreateInput {
+  name: String
+  schema: String
+  widgets: String
+  project: ProjectRelateToOneForCreateInput
+  publishId: String
+  isPublished: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+  author: UserRelateToOneForCreateInput
+  responses: SurveyResponseRelateToManyForCreateInput
+}
+
+input ProjectRelateToOneForCreateInput {
+  create: ProjectCreateInput
+  connect: ProjectWhereUniqueInput
+}
+
+input SurveyResponseRelateToManyForCreateInput {
+  create: [SurveyResponseCreateInput!]
+  connect: [SurveyResponseWhereUniqueInput!]
+}
+
+type SurveyResponse {
+  id: ID!
+  survey: Survey
+  response: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input SurveyResponseWhereUniqueInput {
+  id: ID
+}
+
+input SurveyResponseWhereInput {
+  AND: [SurveyResponseWhereInput!]
+  OR: [SurveyResponseWhereInput!]
+  NOT: [SurveyResponseWhereInput!]
+  id: IDFilter
+  survey: SurveyWhereInput
+  response: StringFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input SurveyResponseOrderByInput {
+  id: OrderDirection
+  response: OrderDirection
+  createdAt: OrderDirection
+  updatedAt: OrderDirection
+}
+
+input SurveyResponseUpdateInput {
+  survey: SurveyRelateToOneForUpdateInput
+  response: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input SurveyRelateToOneForUpdateInput {
+  create: SurveyCreateInput
+  connect: SurveyWhereUniqueInput
+  disconnect: Boolean
+}
+
+input SurveyResponseUpdateArgs {
+  where: SurveyResponseWhereUniqueInput!
+  data: SurveyResponseUpdateInput!
+}
+
+input SurveyResponseCreateInput {
+  survey: SurveyRelateToOneForCreateInput
+  response: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input SurveyRelateToOneForCreateInput {
+  create: SurveyCreateInput
+  connect: SurveyWhereUniqueInput
+}
+
+type Team {
+  id: ID!
+  members(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  membersCount(where: UserWhereInput! = {}): Int
+  organisation: Organisation
+}
+
+input TeamWhereUniqueInput {
+  id: ID
+}
+
+input TeamWhereInput {
+  AND: [TeamWhereInput!]
+  OR: [TeamWhereInput!]
+  NOT: [TeamWhereInput!]
+  id: IDFilter
+  members: UserManyRelationFilter
+  organisation: OrganisationWhereInput
+}
+
+input TeamOrderByInput {
+  id: OrderDirection
+}
+
+input TeamUpdateInput {
+  members: UserRelateToManyForUpdateInput
+  organisation: OrganisationRelateToOneForUpdateInput
+}
+
+input TeamUpdateArgs {
+  where: TeamWhereUniqueInput!
+  data: TeamUpdateInput!
+}
+
+input TeamCreateInput {
+  members: UserRelateToManyForCreateInput
+  organisation: OrganisationRelateToOneForCreateInput
+}
+
+type User {
+  id: ID!
+  firstname: String
+  lastname: String
+  email: String
+  password: String
+  title: String
+  isOwner: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+  hasVerifiedEmail: Boolean
+  teams(
+    where: TeamWhereInput! = {}
+    orderBy: [TeamOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Team!]
+  teamsCount(where: TeamWhereInput! = {}): Int
+  organisation: Organisation
+  workspaces(
+    where: WorkspaceWhereInput! = {}
+    orderBy: [WorkspaceOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Workspace!]
+  workspacesCount(where: WorkspaceWhereInput! = {}): Int
+  projects(
+    where: ProjectWhereInput! = {}
+    orderBy: [ProjectOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Project!]
+  projectsCount(where: ProjectWhereInput! = {}): Int
+  hostInvites(
+    where: InviteWhereInput! = {}
+    orderBy: [InviteOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Invite!]
+  hostInvitesCount(where: InviteWhereInput! = {}): Int
+  guestInvites(
+    where: InviteWhereInput! = {}
+    orderBy: [InviteOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Invite!]
+  guestInvitesCount(where: InviteWhereInput! = {}): Int
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  email: String
+}
+
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+  id: IDFilter
+  firstname: StringFilter
+  lastname: StringFilter
+  email: StringFilter
+  password: StringFilter
+  title: StringFilter
+  isOwner: BooleanFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
+  hasVerifiedEmail: BooleanFilter
+  teams: TeamManyRelationFilter
+  organisation: OrganisationWhereInput
+  workspaces: WorkspaceManyRelationFilter
+  projects: ProjectManyRelationFilter
+  hostInvites: InviteManyRelationFilter
+  guestInvites: InviteManyRelationFilter
+}
+
+input InviteManyRelationFilter {
+  every: InviteWhereInput
+  some: InviteWhereInput
+  none: InviteWhereInput
+}
+
+input UserOrderByInput {
+  id: OrderDirection
+  firstname: OrderDirection
+  lastname: OrderDirection
+  email: OrderDirection
+  password: OrderDirection
+  title: OrderDirection
+  isOwner: OrderDirection
+  createdAt: OrderDirection
+  updatedAt: OrderDirection
+  hasVerifiedEmail: OrderDirection
+}
+
+input UserUpdateInput {
+  firstname: String
+  lastname: String
+  email: String
+  password: String
+  title: String
+  isOwner: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+  hasVerifiedEmail: Boolean
+  teams: TeamRelateToManyForUpdateInput
+  organisation: OrganisationRelateToOneForUpdateInput
+  workspaces: WorkspaceRelateToManyForUpdateInput
+  projects: ProjectRelateToManyForUpdateInput
+  hostInvites: InviteRelateToManyForUpdateInput
+  guestInvites: InviteRelateToManyForUpdateInput
+}
+
+input InviteRelateToManyForUpdateInput {
+  disconnect: [InviteWhereUniqueInput!]
+  set: [InviteWhereUniqueInput!]
+  create: [InviteCreateInput!]
+  connect: [InviteWhereUniqueInput!]
+}
+
+input UserUpdateArgs {
+  where: UserWhereUniqueInput!
+  data: UserUpdateInput!
+}
+
+input UserCreateInput {
+  firstname: String
+  lastname: String
+  email: String
+  password: String
+  title: String
+  isOwner: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+  hasVerifiedEmail: Boolean
+  teams: TeamRelateToManyForCreateInput
+  organisation: OrganisationRelateToOneForCreateInput
+  workspaces: WorkspaceRelateToManyForCreateInput
+  projects: ProjectRelateToManyForCreateInput
+  hostInvites: InviteRelateToManyForCreateInput
+  guestInvites: InviteRelateToManyForCreateInput
+}
+
+input InviteRelateToManyForCreateInput {
+  create: [InviteCreateInput!]
+  connect: [InviteWhereUniqueInput!]
+}
+
+type Workspace {
+  id: ID!
+  name: String
+  description: String
+  organisation: Organisation
+  projects(
+    where: ProjectWhereInput! = {}
+    orderBy: [ProjectOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Project!]
+  projectsCount(where: ProjectWhereInput! = {}): Int
+  users: User
+  isArchived: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input WorkspaceWhereUniqueInput {
+  id: ID
+  name: String
+}
+
+input WorkspaceWhereInput {
+  AND: [WorkspaceWhereInput!]
+  OR: [WorkspaceWhereInput!]
+  NOT: [WorkspaceWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  description: StringFilter
+  organisation: OrganisationWhereInput
+  projects: ProjectManyRelationFilter
+  users: UserWhereInput
+  isArchived: BooleanFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input WorkspaceOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  description: OrderDirection
+  isArchived: OrderDirection
+  createdAt: OrderDirection
+  updatedAt: OrderDirection
+}
+
+input WorkspaceUpdateInput {
+  name: String
+  description: String
+  organisation: OrganisationRelateToOneForUpdateInput
+  projects: ProjectRelateToManyForUpdateInput
+  users: UserRelateToOneForUpdateInput
+  isArchived: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input WorkspaceUpdateArgs {
+  where: WorkspaceWhereUniqueInput!
+  data: WorkspaceUpdateInput!
+}
+
+input WorkspaceCreateInput {
+  name: String
+  description: String
+  organisation: OrganisationRelateToOneForCreateInput
+  projects: ProjectRelateToManyForCreateInput
+  users: UserRelateToOneForCreateInput
+  isArchived: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type Invite {
+  id: ID!
+  resource: String
+  resourceId: String
+  guest: User
+  host: User
+  guestRole: String
+  status: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input InviteWhereUniqueInput {
+  id: ID
+}
+
+input InviteWhereInput {
+  AND: [InviteWhereInput!]
+  OR: [InviteWhereInput!]
+  NOT: [InviteWhereInput!]
+  id: IDFilter
+  resource: StringNullableFilter
+  resourceId: StringFilter
+  guest: UserWhereInput
+  host: UserWhereInput
+  guestRole: StringNullableFilter
+  status: StringNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input InviteOrderByInput {
+  id: OrderDirection
+  resource: OrderDirection
+  resourceId: OrderDirection
+  guestRole: OrderDirection
+  status: OrderDirection
+  createdAt: OrderDirection
+  updatedAt: OrderDirection
+}
+
+input InviteUpdateInput {
+  resource: String
+  resourceId: String
+  guest: UserRelateToOneForUpdateInput
+  host: UserRelateToOneForUpdateInput
+  guestRole: String
+  status: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input InviteUpdateArgs {
+  where: InviteWhereUniqueInput!
+  data: InviteUpdateInput!
+}
+
+input InviteCreateInput {
+  resource: String
+  resourceId: String
+  guest: UserRelateToOneForCreateInput
+  host: UserRelateToOneForCreateInput
+  guestRole: String
+  status: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -121,6 +1046,68 @@ type Mutation {
   deleteKpilensSuperAdmins(
     where: [KpilensSuperAdminWhereUniqueInput!]!
   ): [KpilensSuperAdmin]
+  createOrganisation(data: OrganisationCreateInput!): Organisation
+  createOrganisations(data: [OrganisationCreateInput!]!): [Organisation]
+  updateOrganisation(
+    where: OrganisationWhereUniqueInput!
+    data: OrganisationUpdateInput!
+  ): Organisation
+  updateOrganisations(data: [OrganisationUpdateArgs!]!): [Organisation]
+  deleteOrganisation(where: OrganisationWhereUniqueInput!): Organisation
+  deleteOrganisations(where: [OrganisationWhereUniqueInput!]!): [Organisation]
+  createProject(data: ProjectCreateInput!): Project
+  createProjects(data: [ProjectCreateInput!]!): [Project]
+  updateProject(
+    where: ProjectWhereUniqueInput!
+    data: ProjectUpdateInput!
+  ): Project
+  updateProjects(data: [ProjectUpdateArgs!]!): [Project]
+  deleteProject(where: ProjectWhereUniqueInput!): Project
+  deleteProjects(where: [ProjectWhereUniqueInput!]!): [Project]
+  createSurvey(data: SurveyCreateInput!): Survey
+  createSurveys(data: [SurveyCreateInput!]!): [Survey]
+  updateSurvey(where: SurveyWhereUniqueInput!, data: SurveyUpdateInput!): Survey
+  updateSurveys(data: [SurveyUpdateArgs!]!): [Survey]
+  deleteSurvey(where: SurveyWhereUniqueInput!): Survey
+  deleteSurveys(where: [SurveyWhereUniqueInput!]!): [Survey]
+  createSurveyResponse(data: SurveyResponseCreateInput!): SurveyResponse
+  createSurveyResponses(data: [SurveyResponseCreateInput!]!): [SurveyResponse]
+  updateSurveyResponse(
+    where: SurveyResponseWhereUniqueInput!
+    data: SurveyResponseUpdateInput!
+  ): SurveyResponse
+  updateSurveyResponses(data: [SurveyResponseUpdateArgs!]!): [SurveyResponse]
+  deleteSurveyResponse(where: SurveyResponseWhereUniqueInput!): SurveyResponse
+  deleteSurveyResponses(
+    where: [SurveyResponseWhereUniqueInput!]!
+  ): [SurveyResponse]
+  createTeam(data: TeamCreateInput!): Team
+  createTeams(data: [TeamCreateInput!]!): [Team]
+  updateTeam(where: TeamWhereUniqueInput!, data: TeamUpdateInput!): Team
+  updateTeams(data: [TeamUpdateArgs!]!): [Team]
+  deleteTeam(where: TeamWhereUniqueInput!): Team
+  deleteTeams(where: [TeamWhereUniqueInput!]!): [Team]
+  createUser(data: UserCreateInput!): User
+  createUsers(data: [UserCreateInput!]!): [User]
+  updateUser(where: UserWhereUniqueInput!, data: UserUpdateInput!): User
+  updateUsers(data: [UserUpdateArgs!]!): [User]
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  createWorkspace(data: WorkspaceCreateInput!): Workspace
+  createWorkspaces(data: [WorkspaceCreateInput!]!): [Workspace]
+  updateWorkspace(
+    where: WorkspaceWhereUniqueInput!
+    data: WorkspaceUpdateInput!
+  ): Workspace
+  updateWorkspaces(data: [WorkspaceUpdateArgs!]!): [Workspace]
+  deleteWorkspace(where: WorkspaceWhereUniqueInput!): Workspace
+  deleteWorkspaces(where: [WorkspaceWhereUniqueInput!]!): [Workspace]
+  createInvite(data: InviteCreateInput!): Invite
+  createInvites(data: [InviteCreateInput!]!): [Invite]
+  updateInvite(where: InviteWhereUniqueInput!, data: InviteUpdateInput!): Invite
+  updateInvites(data: [InviteUpdateArgs!]!): [Invite]
+  deleteInvite(where: InviteWhereUniqueInput!): Invite
+  deleteInvites(where: [InviteWhereUniqueInput!]!): [Invite]
   endSession: Boolean!
   authenticateKpilensSuperAdminWithPassword(
     email: String!
@@ -161,6 +1148,70 @@ type Query {
     where: KpilensSuperAdminWhereUniqueInput!
   ): KpilensSuperAdmin
   kpilensSuperAdminsCount(where: KpilensSuperAdminWhereInput! = {}): Int
+  organisations(
+    where: OrganisationWhereInput! = {}
+    orderBy: [OrganisationOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Organisation!]
+  organisation(where: OrganisationWhereUniqueInput!): Organisation
+  organisationsCount(where: OrganisationWhereInput! = {}): Int
+  projects(
+    where: ProjectWhereInput! = {}
+    orderBy: [ProjectOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Project!]
+  project(where: ProjectWhereUniqueInput!): Project
+  projectsCount(where: ProjectWhereInput! = {}): Int
+  surveys(
+    where: SurveyWhereInput! = {}
+    orderBy: [SurveyOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Survey!]
+  survey(where: SurveyWhereUniqueInput!): Survey
+  surveysCount(where: SurveyWhereInput! = {}): Int
+  surveyResponses(
+    where: SurveyResponseWhereInput! = {}
+    orderBy: [SurveyResponseOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [SurveyResponse!]
+  surveyResponse(where: SurveyResponseWhereUniqueInput!): SurveyResponse
+  surveyResponsesCount(where: SurveyResponseWhereInput! = {}): Int
+  teams(
+    where: TeamWhereInput! = {}
+    orderBy: [TeamOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Team!]
+  team(where: TeamWhereUniqueInput!): Team
+  teamsCount(where: TeamWhereInput! = {}): Int
+  users(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  user(where: UserWhereUniqueInput!): User
+  usersCount(where: UserWhereInput! = {}): Int
+  workspaces(
+    where: WorkspaceWhereInput! = {}
+    orderBy: [WorkspaceOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Workspace!]
+  workspace(where: WorkspaceWhereUniqueInput!): Workspace
+  workspacesCount(where: WorkspaceWhereInput! = {}): Int
+  invites(
+    where: InviteWhereInput! = {}
+    orderBy: [InviteOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Invite!]
+  invite(where: InviteWhereUniqueInput!): Invite
+  invitesCount(where: InviteWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
@@ -237,11 +1288,6 @@ enum KeystoneAdminUIFieldMetaItemViewFieldMode {
   edit
   read
   hidden
-}
-
-enum QueryMode {
-  default
-  insensitive
 }
 
 type KeystoneAdminUISort {

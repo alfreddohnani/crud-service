@@ -10,12 +10,13 @@ import { config } from "@keystone-6/core";
 
 import { lists } from "./schemas";
 import { withAuth, session } from "./auth";
+import { DATABASE_URI } from "./config";
 
 export default withAuth(
   config({
     db: {
-      provider: "sqlite",
-      url: "file:./keystone.db",
+      provider: "postgresql",
+      url: "postgres://postgres:root@localhost:5432/kpilens",
     },
 
     ui: {

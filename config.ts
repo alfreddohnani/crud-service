@@ -1,5 +1,4 @@
 import path from "path";
-
 import { config } from "dotenv";
 
 function getEnvVar(key: string) {
